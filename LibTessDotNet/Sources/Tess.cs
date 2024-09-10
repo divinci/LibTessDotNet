@@ -731,6 +731,24 @@ namespace LibTessDotNet
         }
 
         /// <summary>
+        /// Adds multiple closed contours to be tessellated.
+        /// </summary>
+        /// <param name="vertices"> Multiple sets of Vertices of the contour. </param>
+        /// <param name="forceOrientation">
+        /// Orientation of the contour.
+        /// <see cref="ContourOrientation.Original"/> keeps the orientation of the input vertices.
+        /// <see cref="ContourOrientation.Clockwise"/> and <see cref="ContourOrientation.CounterClockwise"/> 
+        /// force the vertices to have a specified orientation.
+        /// </param>
+        public void AddContours(IEnumerable<ContourVertex[]> vertices, ContourOrientation forceOrientation = ContourOrientation.Original)
+        {
+            foreach(var vertice in vertices)
+            {
+                AddContourInternal(vertice, forceOrientation);
+            }
+        }
+
+        /// <summary>
         /// Adds a closed contour to be tessellated.
         /// </summary>
         /// <param name="vertices"> Vertices of the contour. </param>
