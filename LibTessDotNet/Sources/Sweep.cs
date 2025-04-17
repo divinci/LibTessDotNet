@@ -31,6 +31,7 @@
 ** LibTessDotNet: Remi Gillig, https://github.com/speps/LibTessDotNet
 */
 
+using LibTessDotNet.Sources;
 using System;
 using System.Diagnostics;
 

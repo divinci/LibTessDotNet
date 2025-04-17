@@ -40,12 +40,12 @@ using Real = System.Double;
 namespace LibTessDotNet.Double
 #else
 using Real = System.Single;
-namespace LibTessDotNet
+namespace LibTessDotNet.Sources
 #endif
 {
     public struct Vec3
     {
-        public readonly static Vec3 Zero = new Vec3();
+        public readonly static Vec3 Zero = new();
 
         public Real X, Y, Z;
 
@@ -105,7 +105,7 @@ namespace LibTessDotNet
 
         public static int LongAxis(ref Vec3 v)
         {
-            int i = 0;
+            var i = 0;
             if (Math.Abs(v.Y) > Math.Abs(v.X)) i = 1;
             if (Math.Abs(v.Z) > Math.Abs(i == 0 ? v.X : v.Y)) i = 2;
             return i;
@@ -125,7 +125,7 @@ namespace LibTessDotNet
 
     public class DefaultTypePool<T> : ITypePool where T: class, Pooled<T>, new()
     {
-        private Queue<T> _pool = new Queue<T>();
+        private Queue<T> _pool = new();
 
         private static readonly Func<T> Creator = Expression.Lambda<Func<T>>(Expression.New(typeof(T))).Compile();
 
@@ -289,7 +289,7 @@ namespace LibTessDotNet
             {
                 get
                 {
-                    int n = 0;
+                    var n = 0;
                     var eCur = _anEdge;
                     do {
                         n++;
@@ -320,8 +320,8 @@ namespace LibTessDotNet
 
             public static EdgePair Create(IPool pool)
             {
-                var e = pool.Get<MeshUtils.Edge>();
-                var eSym = pool.Get<MeshUtils.Edge>();
+                var e = pool.Get<Edge>();
+                var eSym = pool.Get<Edge>();
 
                 e._pair._e = e;
                 e._pair._eSym = eSym;
@@ -404,7 +404,7 @@ namespace LibTessDotNet
         /// </summary>
         public static void MakeVertex(IPool pool, Edge eOrig, Vertex vNext)
         {
-            var vNew = pool.Get<MeshUtils.Vertex>();
+            var vNew = pool.Get<Vertex>();
 
             // insert in circular doubly-linked list before vNext
             var vPrev = vNext._prev;
@@ -433,7 +433,7 @@ namespace LibTessDotNet
         /// </summary>
         public static void MakeFace(IPool pool, Edge eOrig, Face fNext)
         {
-            var fNew = pool.Get<MeshUtils.Face>();
+            var fNew = pool.Get<Face>();
 
             // insert in circular doubly-linked list before fNext
             var fPrev = fNext._prev;
@@ -463,16 +463,16 @@ namespace LibTessDotNet
         /// No vertex or face structures are allocated, but these must be assigned
         /// before the current edge operation is completed.
         /// </summary>
-        public static MeshUtils.Edge MakeEdge(IPool pool, MeshUtils.Edge eNext)
+        public static Edge MakeEdge(IPool pool, Edge eNext)
         {
             Debug.Assert(eNext != null);
 
-            var pair = MeshUtils.EdgePair.Create(pool);
+            var pair = EdgePair.Create(pool);
             var e = pair._e;
             var eSym = pair._eSym;
 
             // Make sure eNext points to the first edge of the edge pair
-            MeshUtils.Edge.EnsureFirst(ref eNext);
+            Edge.EnsureFirst(ref eNext);
 
             // Insert in circular doubly-linked list before eNext.
             // Note that the prev pointer is stored in Sym->next.

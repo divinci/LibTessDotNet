@@ -31,9 +31,12 @@
 ** LibTessDotNet: Remi Gillig, https://github.com/speps/LibTessDotNet
 */
 
+using LibTessDotNet.Sources;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+
 
 #if DOUBLE
 using Real = System.Double;
@@ -740,11 +743,11 @@ namespace LibTessDotNet
         /// <see cref="ContourOrientation.Clockwise"/> and <see cref="ContourOrientation.CounterClockwise"/> 
         /// force the vertices to have a specified orientation.
         /// </param>
-        public void AddContours(IEnumerable<ContourVertex[]> vertices, ContourOrientation forceOrientation = ContourOrientation.Original)
+        public void AddContours(IEnumerable<IEnumerable<ContourVertex>> vertices, ContourOrientation forceOrientation = ContourOrientation.Original)
         {
             foreach(var vertice in vertices)
             {
-                AddContourInternal(vertice, forceOrientation);
+                AddContourInternal(vertice.ToArray(), forceOrientation);
             }
         }
 

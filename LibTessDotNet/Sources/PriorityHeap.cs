@@ -37,7 +37,7 @@ using System.Diagnostics;
 #if DOUBLE
 namespace LibTessDotNet.Double
 #else
-namespace LibTessDotNet
+namespace LibTessDotNet.Sources
 #endif
 {
     internal struct PQHandle
@@ -135,7 +135,7 @@ namespace LibTessDotNet
 
         public void Init()
         {
-            for (int i = _size; i >= 1; --i)
+            for (var i = _size; i >= 1; --i)
             {
                 FloatDown(i);
             }
@@ -144,8 +144,8 @@ namespace LibTessDotNet
 
         public PQHandle Insert(TValue value)
         {
-            int curr = ++_size;
-            if ((curr * 2) > _max)
+            var curr = ++_size;
+            if (curr * 2 > _max)
             {
                 _max <<= 1;
                 Array.Resize(ref _nodes, _max + 1);
@@ -187,8 +187,8 @@ namespace LibTessDotNet
         {
             Debug.Assert(_initialized);
 
-            int hMin = _nodes[1];
-            TValue min = _handles[hMin]._key;
+            var hMin = _nodes[1];
+            var min = _handles[hMin]._key;
 
             if (_size > 0)
             {
@@ -218,10 +218,10 @@ namespace LibTessDotNet
         {
             Debug.Assert(_initialized);
 
-            int hCurr = handle._handle;
+            var hCurr = handle._handle;
             Debug.Assert(hCurr >= 1 && hCurr <= _max && _handles[hCurr]._key != null);
 
-            int curr = _handles[hCurr]._node;
+            var curr = _handles[hCurr]._node;
             _nodes[curr] = _nodes[_size];
             _handles[_nodes[curr]]._node = curr;
 

@@ -36,7 +36,7 @@ using System.Diagnostics;
 #if DOUBLE
 namespace LibTessDotNet.Double
 #else
-namespace LibTessDotNet
+namespace LibTessDotNet.Sources
 #endif
 {
     internal class Mesh : Pooled<Mesh>
@@ -152,14 +152,14 @@ namespace LibTessDotNet
                 return;
             }
 
-            bool joiningVertices = false;
+            var joiningVertices = false;
             if (eDst._Org != eOrg._Org)
             {
                 // We are merging two disjoint vertices -- destroy eDst->Org
                 joiningVertices = true;
                 MeshUtils.KillVertex(pool, eDst._Org, eOrg._Org);
             }
-            bool joiningLoops = false;
+            var joiningLoops = false;
             if (eDst._Lface != eOrg._Lface)
             {
                 // We are connecting two disjoint loops -- destroy eDst->Lface
@@ -200,7 +200,7 @@ namespace LibTessDotNet
             // First step: disconnect the origin vertex eDel->Org.  We make all
             // changes to get a consistent mesh in this "intermediate" state.
 
-            bool joiningLoops = false;
+            var joiningLoops = false;
             if (eDel._Lface != eDel._Rface)
             {
                 // We are joining two loops into one -- remove the left face
@@ -306,7 +306,7 @@ namespace LibTessDotNet
             var eNew = MeshUtils.MakeEdge(pool, eOrg);
             var eNewSym = eNew._Sym;
 
-            bool joiningLoops = false;
+            var joiningLoops = false;
             if (eDst._Lface != eOrg._Lface)
             {
                 // We are connecting two disjoint loops -- destroy eDst->Lface
@@ -414,9 +414,9 @@ namespace LibTessDotNet
                     {
                         // Try to merge the neighbour faces if the resulting polygons
                         // does not exceed maximum number of vertices.
-                        int curNv = f.VertsCount;
-                        int symNv = eSym._Lface.VertsCount;
-                        if ((curNv + symNv - 2) <= maxVertsPerFace)
+                        var curNv = f.VertsCount;
+                        var symNv = eSym._Lface.VertsCount;
+                        if (curNv + symNv - 2 <= maxVertsPerFace)
                         {
                             // Merge if the resulting poly is convex.
                             if (Geom.VertCCW(eCur._Lprev._Org, eCur._Org, eSym._Lnext._Lnext._Org) &&
@@ -475,7 +475,7 @@ namespace LibTessDotNet
             }
             Debug.Assert(v._prev == vPrev && v._anEdge == null);
 
-            MeshUtils.Edge ePrev = _eHead;
+            var ePrev = _eHead;
             for (ePrev = _eHead; (e = ePrev._next) != _eHead; ePrev = e)
             {
                 Debug.Assert(e._Sym._next == ePrev._Sym);

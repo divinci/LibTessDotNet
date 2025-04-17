@@ -38,7 +38,7 @@ using System.Diagnostics;
 #if DOUBLE
 namespace LibTessDotNet.Double
 #else
-namespace LibTessDotNet
+namespace LibTessDotNet.Sources
 #endif
 {
     internal class PriorityQueue<TValue> where TValue : class
@@ -72,7 +72,7 @@ namespace LibTessDotNet
 
         static void Swap(ref int a, ref int b)
         {
-            int tmp = a;
+            var tmp = a;
             a = b;
             b = tmp;
         }
@@ -156,7 +156,7 @@ namespace LibTessDotNet
                 return _heap.Insert(value);
             }
 
-            int curr = _size;
+            var curr = _size;
             if (++_size >= _max)
             {
                 _max <<= 1;
@@ -175,10 +175,10 @@ namespace LibTessDotNet
             {
                 return _heap.ExtractMin();
             }
-            TValue sortMin = _keys[_order[_size - 1]];
+            var sortMin = _keys[_order[_size - 1]];
             if (!_heap.Empty)
             {
-                TValue heapMin = _heap.Minimum();
+                var heapMin = _heap.Minimum();
                 if (_leq(heapMin, sortMin))
                     return _heap.ExtractMin();
             }
@@ -197,10 +197,10 @@ namespace LibTessDotNet
             {
                 return _heap.Minimum();
             }
-            TValue sortMin = _keys[_order[_size - 1]];
+            var sortMin = _keys[_order[_size - 1]];
             if (!_heap.Empty)
             {
-                TValue heapMin = _heap.Minimum();
+                var heapMin = _heap.Minimum();
                 if (_leq(heapMin, sortMin))
                     return heapMin;
             }
@@ -211,7 +211,7 @@ namespace LibTessDotNet
         {
             Debug.Assert(_initialized);
 
-            int curr = handle._handle;
+            var curr = handle._handle;
             if (curr >= 0)
             {
                 _heap.Remove(handle);

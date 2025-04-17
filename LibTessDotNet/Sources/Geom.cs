@@ -39,7 +39,7 @@ using Real = System.Double;
 namespace LibTessDotNet.Double
 #else
 using Real = System.Single;
-namespace LibTessDotNet
+namespace LibTessDotNet.Sources
 #endif
 {
     internal static class Geom
@@ -64,7 +64,7 @@ namespace LibTessDotNet
 
         public static bool VertCCW(MeshUtils.Vertex u, MeshUtils.Vertex v, MeshUtils.Vertex w)
         {
-            return (u._s * (v._t - w._t) + v._s * (w._t - u._t) + w._s * (u._t - v._t)) >= 0.0f;
+            return u._s * (v._t - w._t) + v._s * (w._t - u._t) + w._s * (u._t - v._t) >= 0.0f;
         }
         public static bool VertEq(MeshUtils.Vertex lhs, MeshUtils.Vertex rhs)
         {
@@ -72,7 +72,7 @@ namespace LibTessDotNet
         }
         public static bool VertLeq(MeshUtils.Vertex lhs, MeshUtils.Vertex rhs)
         {
-            return (lhs._s < rhs._s) || (lhs._s == rhs._s && lhs._t <= rhs._t);
+            return lhs._s < rhs._s || lhs._s == rhs._s && lhs._t <= rhs._t;
         }
 
         /// <summary>
@@ -97,11 +97,11 @@ namespace LibTessDotNet
             {
                 if (gapL < gapR)
                 {
-                    return (v._t - u._t) + (u._t - w._t) * (gapL / (gapL + gapR));
+                    return v._t - u._t + (u._t - w._t) * (gapL / (gapL + gapR));
                 }
                 else
                 {
-                    return (v._t - w._t) + (w._t - u._t) * (gapR / (gapL + gapR));
+                    return v._t - w._t + (w._t - u._t) * (gapR / (gapL + gapR));
                 }
             }
             /* vertical line */
@@ -130,7 +130,7 @@ namespace LibTessDotNet
 
         public static bool TransLeq(MeshUtils.Vertex lhs, MeshUtils.Vertex rhs)
         {
-            return (lhs._t < rhs._t) || (lhs._t == rhs._t && lhs._s <= rhs._s);
+            return lhs._t < rhs._t || lhs._t == rhs._t && lhs._s <= rhs._s;
         }
 
         public static Real TransEval(MeshUtils.Vertex u, MeshUtils.Vertex v, MeshUtils.Vertex w)
@@ -144,11 +144,11 @@ namespace LibTessDotNet
             {
                 if (gapL < gapR)
                 {
-                    return (v._s - u._s) + (u._s - w._s) * (gapL / (gapL + gapR));
+                    return v._s - u._s + (u._s - w._s) * (gapL / (gapL + gapR));
                 }
                 else
                 {
-                    return (v._s - w._s) + (w._s - u._s) * (gapR / (gapL + gapR));
+                    return v._s - w._s + (w._s - u._s) * (gapR / (gapL + gapR));
                 }
             }
             /* vertical line */
@@ -201,9 +201,9 @@ namespace LibTessDotNet
             {
                 b = 0.0f;
             }
-            return ((a <= b) ? ((b == 0.0f) ? ((x+y) / 2.0f)
-                    : (x + (y-x) * (a/(a+b))))
-                    : (y + (x-y) * (b/(a+b))));
+            return a <= b ? b == 0.0f ? (x+y) / 2.0f
+                    : x + (y-x) * (a/(a+b))
+                    : y + (x-y) * (b/(a+b));
         }
 
         static void Swap(ref MeshUtils.Vertex a, ref MeshUtils.Vertex b)
