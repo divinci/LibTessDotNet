@@ -43,11 +43,11 @@ using Real = System.Single;
 namespace LibTessDotNet.Sources
 #endif
 {
-    public struct Vec3
+    public struct Vec3(Real x, Real y, Real z)
     {
         public readonly static Vec3 Zero = new();
 
-        public Real X, Y, Z;
+        public Real X = x, Y = y, Z = z;
 
         public Real this[int index]
         {
@@ -65,13 +65,6 @@ namespace LibTessDotNet.Sources
                 else if (index == 2) Z = value;
                 else throw new IndexOutOfRangeException();
             }
-        }
-
-        public Vec3(Real x, Real y, Real z)
-        {
-            X = x;
-            Y = y;
-            Z = z;
         }
 
         public static void Sub(ref Vec3 lhs, ref Vec3 rhs, out Vec3 result)
@@ -125,7 +118,7 @@ namespace LibTessDotNet.Sources
 
     public class DefaultTypePool<T> : ITypePool where T: class, Pooled<T>, new()
     {
-        private Queue<T> _pool = new();
+        private readonly Queue<T> _pool = new();
 
         private static readonly Func<T> Creator = Expression.Lambda<Func<T>>(Expression.New(typeof(T))).Compile();
 

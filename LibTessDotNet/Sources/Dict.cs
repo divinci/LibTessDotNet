@@ -65,8 +65,8 @@ namespace LibTessDotNet.Sources
 
         public delegate bool LessOrEqual(TValue lhs, TValue rhs);
 
-        private IPool _pool;
-        private LessOrEqual _leq;
+        private readonly IPool _pool;
+        private readonly LessOrEqual _leq;
         Node _head;
 
         public bool Empty { get { return _head._next == _head; } }

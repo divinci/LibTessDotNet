@@ -41,29 +41,17 @@ namespace LibTessDotNet.Double
 namespace LibTessDotNet.Sources
 #endif
 {
-    internal class PriorityQueue<TValue> where TValue : class
+    internal class PriorityQueue<TValue>(int initialSize, PriorityHeap<TValue>.LessOrEqual leq) where TValue : class
     {
-        private PriorityHeap<TValue>.LessOrEqual _leq;
-        private PriorityHeap<TValue> _heap;
-        private TValue[] _keys;
+        private readonly PriorityHeap<TValue>.LessOrEqual _leq = leq;
+        private readonly PriorityHeap<TValue> _heap = new PriorityHeap<TValue>(initialSize, leq);
+        private TValue[] _keys = new TValue[initialSize];
         private int[] _order;
 
-        private int _size, _max;
-        private bool _initialized;
+        private int _size = 0, _max = initialSize;
+        private bool _initialized = false;
 
         public bool Empty { get { return _size == 0 && _heap.Empty; } }
-
-        public PriorityQueue(int initialSize, PriorityHeap<TValue>.LessOrEqual leq)
-        {
-            _leq = leq;
-            _heap = new PriorityHeap<TValue>(initialSize, leq);
-
-            _keys = new TValue[initialSize];
-
-            _size = 0;
-            _max = initialSize;
-            _initialized = false;
-        }
 
         struct StackItem
         {

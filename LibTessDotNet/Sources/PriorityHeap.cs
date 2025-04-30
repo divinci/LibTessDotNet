@@ -56,7 +56,7 @@ namespace LibTessDotNet.Sources
             internal int _node;
         }
 
-        private LessOrEqual _leq;
+        private readonly LessOrEqual _leq;
         private int[] _nodes;
         private HandleElem[] _handles;
         private int _size, _max;

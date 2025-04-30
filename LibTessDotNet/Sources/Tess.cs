@@ -91,16 +91,10 @@ namespace LibTessDotNet
         CounterClockwise
     }
 
-    public struct ContourVertex
+    public struct ContourVertex(Vec3 position, object data = null)
     {
-        public Vec3 Position;
-        public object Data;
-
-        public ContourVertex(Vec3 position, object data = null)
-        {
-            Position = position;
-            Data = data;
-        }
+        public Vec3 Position = position;
+        public object Data = data;
 
         public override string ToString()
         {
@@ -133,7 +127,7 @@ namespace LibTessDotNet
     /// </example>
     public partial class Tess
     {
-        private IPool _pool;
+        private readonly IPool _pool;
         private Mesh _mesh;
         private Vec3 _normal;
         private Vec3 _sUnit;
